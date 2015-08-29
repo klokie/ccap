@@ -1,0 +1,88 @@
+{{#if ccap_english}}
+  {{! TITLE: ENGLISH }}
+  {{! TITLE: ENGLISH }}
+  {{! TITLE: ENGLISH }}
+  <h1>{{title}}</h1>
+{{/if}}
+
+{{#if ccap_swedish}}
+  {{! TITLE: SVENSKA }}
+  {{! TITLE: SVENSKA }}
+  {{! TITLE: SVENSKA }}
+  <h1>{{acf.t-sv}}</h1>
+{{/if}}
+
+{{! YEAR }}
+{{! YEAR }}
+{{! YEAR }}
+{{#if acf.year}}
+  <p>{{{acf.year}}}</p>
+{{/if}}
+
+{{! AUTHOR }}
+{{! AUTHOR }}
+{{! AUTHOR }}
+{{#if acf.author}}
+  <p>{{{acf.author}}}</p>
+{{/if}}
+   
+{{#if ccap_english}}
+  {{! TEXT: ENGLISH }}
+  {{! TEXT: ENGLISH }}
+  {{! TEXT: ENGLISH }}
+  <p>{{{acf.text-en}}}</p>
+{{/if}}
+
+{{#if ccap_swedish}}
+  {{! TEXT: SVENSKA }}
+  {{! TEXT: SVENSKA }}
+  {{! TEXT: SVENSKA }}
+  <p>{{{acf.text-sv}}}</p>
+{{/if}}
+
+
+{{! BILD }}
+{{! BILD }}
+{{! BILD }}
+{{#if acf.bilder}}
+  {{#each acf.bilder}}
+    <img src="{{bild.sizes.pwr-medium}}" data-large-src="{{bild.sizes.pwr-large}}" class="light-box"alt="{{bild.caption}}">
+  {{/each}}
+{{/if}}
+
+
+{{! VIDEO }}
+{{! VIDEO }}
+{{! VIDEO }}
+{{#if acf.videos}}
+  {{#each acf.videos}}
+    <div class="outer-video-container">
+      <div class="embed-responsive embed-responsive-16by9">
+        {{{video}}}
+      </div>
+    </div>
+  {{/each}}
+{{/if}}
+
+
+{{! MEDIA }}
+{{! MEDIA }}
+{{! MEDIA }}
+{{#if acf.media}}
+  <h1>Media & Press</h1>
+  {{#each acf.media}}
+    <a href="{{fil.url}}">{{title}}</a>
+  {{/each}}
+{{/if}}
+
+
+{{! KOPPLINGAR }}
+{{! KOPPLINGAR }}
+{{! KOPPLINGAR }}
+{{! KOPPLINGAR }}
+{{#if acf.koppling}}
+  <h1>Relaterat</h1>
+  {{#each acf.koppling}}
+    <p><a href="" class="inner">{{post_title}}</a></p>
+  {{/each}}
+{{/if}}

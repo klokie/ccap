@@ -1,0 +1,17 @@
+<a href="http://93.95.228.60/projects/ccap/" class="logo">ccap</a>
+
+{{#if ccap_english}}
+  {{#each this}}
+    <a href="" class="nav-element level-one {{#if acf.kopplad_till_postkategori_med_samma_namn}}category{{/if}} {{#if acf.has_child_pages}}children{{/if}}" data-post-id="{{ID}}" {{#if acf.kopplad_till_postkategori_med_samma_namn}}data-category-name="{{slug}}"{{/if}} data-nav-offset="{{@index}}">{{title}}</a>
+  {{/each}}
+{{/if}}
+
+{{#if ccap_swedish}}
+  {{#each this}}
+    <a href="" class="nav-element level-one {{#if acf.kopplad_till_postkategori_med_samma_namn}}category{{/if}} {{#if acf.has_child_pages}}children{{/if}}" data-post-id="{{ID}}" {{#if acf.kopplad_till_postkategori_med_samma_namn}}data-category-name="{{slug}}"{{/if}} data-nav-offset="{{@index}}">{{acf.t-sv}}</a>
+  {{/each}}
+{{/if}}
+
+<div class="line-break-single"></div>
+<div><a href="" id="english" class="language-switch {{#if ccap_english}} selected {{/if}}">en</a></div>
+<div><a href="" id="swedish" class="language-switch {{#if ccap_swedish}} selected {{/if}}">sv</a></div>

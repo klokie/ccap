@@ -1,0 +1,31 @@
+{{#each this}}
+  <article>
+    {{#if ../ccap_english}}
+      {{! TITLE: ENGLISH }}
+      {{! TITLE: ENGLISH }}
+      {{! TITLE: ENGLISH }}
+      <h1>{{title}}</h1>
+    {{/if}}
+
+    {{#if ../ccap_swedish}}
+      {{! TITLE: SVENSKA }}
+      {{! TITLE: SVENSKA }}
+      {{! TITLE: SVENSKA }}
+      <h1>{{acf.t-sv}}</h1>
+    {{/if}}
+
+    {{#if ../ccap_english}}
+      {{! TEXT: ENGLISH }}
+      {{! TEXT: ENGLISH }}
+      {{! TEXT: ENGLISH }}
+      <p>{{{acf.text-en}}}</p>
+    {{/if}}
+
+    {{#if ../ccap_swedish}}
+      {{! TEXT: SVENSKA }}
+      {{! TEXT: SVENSKA }}
+      {{! TEXT: SVENSKA }}
+      <p>{{{acf.text-sv}}}</p>
+    {{/if}}
+  </article>
+{{/each}}
