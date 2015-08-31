@@ -1,5 +1,20 @@
+var mobileMode = false;
+
+function checkMediaQuery() {
+  var mq = window.matchMedia("(max-width: 768px)");
+  if (mq.matches) {
+    mobileMode = true;
+  } else {
+    mobileMode = false;
+  }
+}
+
 function clearSecondColumn() {
   $("#inner-nav-container-column-two").html("");
+}
+
+function clearThirdColumn() {
+  $("#inner-nav-container-column-three").html("");
 }
 
 function clearMainContentArea() {
@@ -8,8 +23,10 @@ function clearMainContentArea() {
 
 function getPost(id, offset) {
 
-  // Set correct offset from top od doc
-  $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
+  // Set correct offset from top of doc
+  if (!mobileMode) {
+    $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
+  }
 
   // Start Loading animation
   var dot_loader = window.setInterval(function () {
@@ -49,11 +66,10 @@ function getPost(id, offset) {
 }
 
 function getChildren(id, offset) {
-  //
-  //  console.log(id);
-  //  console.log(offset);
 
-  $("#inner-nav-container-column-two").css("margin-top", (16 * offset) + "px");
+  if (!mobileMode) {
+    $("#inner-nav-container-column-two").css("margin-top", (16 * (offset + 1)) + "px");
+  }
 
   var dot_loader = window.setInterval(function () {
     $("#inner-nav-container-column-two").append(" . ");
@@ -69,25 +85,43 @@ function getChildren(id, offset) {
       }
     },
     success: function (data) {
-      console.log(data);
-      window.clearInterval(dot_loader);
-      var list = {
-        data: data,
-        offset: offset
+
+      if ($.cookie('ccap_language') == "english") {
+        data.ccap_english = true;
+      } else if ($.cookie('ccap_language') == "swedish") {
+        data.ccap_swedish = true;
       }
-      $("#inner-nav-container-column-two").html(MyApp.templates.list(list));
+
+      data.offset = offset;
+
+      window.clearInterval(dot_loader);
+
+      console.log(data);
+
+      $("#inner-nav-container-column-two").html(MyApp.templates.menuleveltwo(data));
     }
   });
 
 }
 
-function getCategoryContent(category_name, offset) {
+function getCategoryContent(category_name, offset, col) {
 
-  $("#inner-nav-container-column-two").css("margin-top", (16 * (offset + 1)) + "px");
+  if (col === 2) {
+    if (!mobileMode) {
+      $("#inner-nav-container-column-two").css("margin-top", (16 * (offset + 1)) + "px");
+    }
+    var dot_loader = window.setInterval(function () {
+      $("#inner-nav-container-column-two").append(" . ");
+    }, 100);
+  } else if (col === 3) {
+    if (!mobileMode) {
+      $("#inner-nav-container-column-three").css("margin-top", (16 * (offset + 1)) + "px");
+    }
+    var dot_loader = window.setInterval(function () {
+      $("#inner-nav-container-column-three").append(" . ");
+    }, 100);
+  }
 
-  var dot_loader = window.setInterval(function () {
-    $("#inner-nav-container-column-two").append(" . ");
-  }, 100);
 
   $.ajax({
     type: 'GET',
@@ -100,12 +134,24 @@ function getCategoryContent(category_name, offset) {
     },
     success: function (data) {
 
-      window.clearInterval(dot_loader);
-      var list = {
-        data: data,
-        offset: offset
+      if ($.cookie('ccap_language') == "english") {
+        data.ccap_english = true;
+      } else if ($.cookie('ccap_language') == "swedish") {
+        data.ccap_swedish = true;
       }
-      $("#inner-nav-container-column-two").html(MyApp.templates.list(list));
+
+      data.offset = offset;
+
+      window.clearInterval(dot_loader);
+
+      console.log(data);
+
+      if (col === 2) {
+        $("#inner-nav-container-column-two").html(MyApp.templates.menuleveltwo(data));
+      } else if (col === 3) {
+        $("#inner-nav-container-column-three").html(MyApp.templates.menulevelthree(data));
+      }
+
     }
   });
 }
@@ -144,8 +190,9 @@ function getMenu() {
 
 function getNews(offset) {
 
-  $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
-
+  if (!mobileMode) {
+    $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
+  }
   var dot_loader = window.setInterval(function () {
     $("#inner-container-main-content-area").append(" . ");
   }, 100);
@@ -176,7 +223,9 @@ function getNews(offset) {
 
 function getSchedule(offset) {
 
-  $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
+  if (!mobileMode) {
+    $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
+  }
 
   var dot_loader = window.setInterval(function () {
     $("#inner-container-main-content-area").append(" . ");
@@ -213,8 +262,9 @@ function getSchedule(offset) {
 
 function getShop(offset) {
 
-  $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
-
+  if (!mobileMode) {
+    $("#inner-container-main-content-area").css("margin-top", (16 * (offset + 1)) + "px");
+  }
   var dot_loader = window.setInterval(function () {
     $("#inner-container-main-content-area").append(" . ");
   }, 100);
@@ -245,6 +295,11 @@ function getShop(offset) {
 
 $(function () {
 
+  $(window).resize(function () {
+    checkMediaQuery();
+  });
+
+
   // LANGUAGE COOKIE
   if ($.cookie('ccap_language') === undefined) {
     $.cookie('ccap_language', 'english', {
@@ -261,11 +316,6 @@ $(function () {
   if (window.location.hash) {
     var postSlug = window.location.hash.replace("#!", "");
     console.log(postSlug);
-
-    // Start Loading animation
-    var dot_loader = window.setInterval(function () {
-      $("#inner-container-main-content-area").append(" . ");
-    }, 100);
 
     // Get post by ID
     $.ajax({
@@ -287,8 +337,6 @@ $(function () {
 
         // State management
         console.log(data[0]);
-        // Stop loading animation
-        window.clearInterval(dot_loader);
         //  Render template
         $("#inner-container-main-content-area").html(MyApp.templates.post(data[0]));
         // Preload images for overlay viewer
@@ -299,6 +347,8 @@ $(function () {
           }
         }
       }
+    }).fail(function () {
+      window.clearInterval(dot_loader);
     });
 
   }
@@ -315,34 +365,53 @@ $(function () {
     } else if ($(this).hasClass("level-two")) {
       $(".level-two.pathfinder").removeClass("pathfinder");
       $(this).addClass("pathfinder");
+    } else if ($(this).hasClass("level-three")) {
+      $(".level-three.pathfinder").removeClass("pathfinder");
+      $(this).addClass("pathfinder");
     }
 
     if ($(this).data("post-id") == 21) {
       clearSecondColumn();
+      clearThirdColumn();
       clearMainContentArea();
       getNews($(this).data("nav-offset"));
     } else if ($(this).data("post-id") == 27) {
       clearSecondColumn();
+      clearThirdColumn();
       clearMainContentArea();
       getSchedule($(this).data("nav-offset"));
     } else if ($(this).data("post-id") == 74) {
       clearSecondColumn();
+      clearThirdColumn();
       clearMainContentArea();
       getShop($(this).data("nav-offset"));
     } else if ($(this).hasClass("category")) {
-      clearSecondColumn();
-      clearMainContentArea();
-      getCategoryContent($(this).data("category-name"), $(this).data("nav-offset"));
+      if ($(this).hasClass("level-two")) {
+        clearThirdColumn();
+        clearMainContentArea();
+        getCategoryContent($(this).data("category-name"), $(this).data("nav-offset") + $(this).data("second-offset"), 3);
+      } else {
+        clearSecondColumn();
+        clearMainContentArea();
+        getCategoryContent($(this).data("category-name"), $(this).data("nav-offset"), 2);
+      }
+
     } else if ($(this).hasClass("children")) {
       clearSecondColumn();
+      clearThirdColumn();
       clearMainContentArea();
       getChildren($(this).data("post-id"), $(this).data("nav-offset"));
     } else {
       if ($(this).hasClass("level-one")) {
         clearSecondColumn();
+        clearThirdColumn();
+        clearMainContentArea();
+        getPost($(this).data("post-id"), $(this).data("nav-offset"));
+
+      } else {
+        clearMainContentArea();
+        getPost($(this).data("post-id"), $(this).data("nav-offset") + $(this).data("second-offset"));
       }
-      clearMainContentArea();
-      getPost($(this).data("post-id"), $(this).data("nav-offset") + $(this).data("second-offset"));
     }
 
   });

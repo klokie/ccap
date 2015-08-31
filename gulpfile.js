@@ -19,32 +19,38 @@ var declare = require('gulp-declare');
 
 
 // Concatenate & Minify JS
-gulp.task('scripts', function() {
-    return gulp.src('src/js/*.js')
+gulp.task('scripts', function () {
+  return gulp.src('src/js/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     .pipe(concat('main.js'))
-    .pipe(rename({suffix: '.min'}))
+    .pipe(rename({
+      suffix: '.min'
+    }))
     .pipe(uglify())
     .pipe(gulp.dest('build/js/'));
 });
 
-gulp.task('sass', function() {
-    return gulp.src('src/style/main.scss')
+gulp.task('sass', function () {
+  return gulp.src('src/style/main.scss')
     .pipe(plumber())
     .pipe(scsslint())
     .pipe(compass({
-        css:   'build/style',
-        sass:  'src/style/'
+      css: 'build/style',
+      sass: 'src/style/'
     }))
     .pipe(autoprefixer())
     .pipe(minifyCSS())
     .pipe(gulp.dest('build/style'));
 });
 
-gulp.task('images', function() {
-    return gulp.src('src/img/**/*')
-    .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
+gulp.task('images', function () {
+  return gulp.src('src/img/**/*')
+    .pipe(cache(imagemin({
+      optimizationLevel: 5,
+      progressive: true,
+      interlaced: true
+    })))
     .pipe(gulp.dest('build/img'));
 });
 
@@ -57,17 +63,18 @@ gulp.task('templates', function () {
       noRedeclare: true, // Avoid duplicate declarations 
     }))
     .pipe(concat('templates.js'))
+    .pipe(uglify())
     .pipe(gulp.dest('build/js/'));
 });
 
 // Watch for changes in files
-gulp.task('watch', function() {
-    // Watch .js files
-    gulp.watch('src/js/*.js', ['scripts']);
-    // Watch .scss files
-    gulp.watch('src/style/main.scss', ['sass']);
-    // Watch image files
-    gulp.watch('src/img/**/*', ['images']);
+gulp.task('watch', function () {
+  // Watch .js files
+  gulp.watch('src/js/*.js', ['scripts']);
+  // Watch .scss files
+  gulp.watch('src/style/main.scss', ['sass']);
+  // Watch image files
+  gulp.watch('src/img/**/*', ['images']);
 });
 
 // Default Task

@@ -1,0 +1,11 @@
+{{#each this}}
+
+  {{#if ../ccap_english}}
+    <a href="" class="nav-element level-two {{#if acf.kopplad_till_postkategori_med_samma_namn}}category{{/if}} {{#if acf.has_child_pages}}children{{/if}}" data-post-id="{{ID}}" data-nav-offset="{{../../offset}}" data-second-offset="{{@index}}" {{#if acf.kopplad_till_postkategori_med_samma_namn}}data-category-name="{{slug}}"{{/if}}>{{{title}}}</a> 
+  {{/if}}
+
+  {{#if ../ccap_swedish}}
+    <a href="" class="nav-element level-two {{#if acf.kopplad_till_postkategori_med_samma_namn}}category{{/if}} {{#if acf.has_child_pages}}children{{/if}}" data-post-id="{{ID}}" data-nav-offset="{{../../offset}}" data-second-offset="{{@index}}" {{#if acf.kopplad_till_postkategori_med_samma_namn}}data-category-name="{{slug}}"{{/if}}>{{{acf.t-sv}}}</a> 
+  {{/if}}
+
+{{/each}}
