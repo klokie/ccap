@@ -69,9 +69,10 @@
 {{! MEDIA }}
 {{! MEDIA }}
 {{#if acf.media}}
+  <div class="line-break-double"></div>
   <h1>Media & Press</h1>
   {{#each acf.media}}
-    <a href="{{fil.url}}">{{title}}</a>
+    <a href="{{fil.url}}" target=_blank>{{title}}</a>
   {{/each}}
 {{/if}}
 
@@ -81,8 +82,9 @@
 {{! KOPPLINGAR }}
 {{! KOPPLINGAR }}
 {{#if acf.koppling}}
+  <div class="line-break-double"></div>
   <h1>Relaterat</h1>
   {{#each acf.koppling}}
-    <p><a href="" class="inner">{{post_title}}</a></p>
+    <p><a href="#" data-post-id="{{ID}}" class="inner">{{post_title}}</a></p>
   {{/each}}
 {{/if}}

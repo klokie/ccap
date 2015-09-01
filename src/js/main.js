@@ -416,6 +416,17 @@ $(function () {
 
   });
 
+  $(document).on("click", ".inner", function (e) {
+    e.preventDefault();
+    clearSecondColumn();
+    clearThirdColumn();
+    clearMainContentArea();
+    getPost($(this).data("post-id"), 0);
+    $("html, body").animate({
+      scrollTop: 0
+    }, 200);
+  });
+
   // COOKIE SWITCH: ENGLISH
   $(document).on("click", '#english', function (e) {
     $.cookie('ccap_language', 'english');
