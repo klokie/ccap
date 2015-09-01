@@ -156,6 +156,76 @@ function getCategoryContent(category_name, offset, col) {
   });
 }
 
+function getArchive(offset) {
+
+  if (!mobileMode) {
+    $("#inner-nav-container-column-two").css("margin-top", (16 * (offset + 1)) + "px");
+  }
+
+  var dot_loader = window.setInterval(function () {
+    $("#inner-nav-container-column-two").append(" . ");
+  }, 100);
+
+  $.ajax({
+    type: 'GET',
+    url: 'http://93.95.228.60/projects/ccap/wp-json/Taxonomies/kronologi/terms',
+    dataType: 'json',
+    filter: {
+      'order': 'DESC',
+      'orderby': 'meta_value'
+    },
+    success: function (data) {
+
+      data.offset = offset;
+
+      window.clearInterval(dot_loader);
+
+      console.log(data);
+
+      $("#inner-nav-container-column-two").html(MyApp.templates.archiveleveltwo(data));
+    }
+  });
+
+}
+
+function getArchiveList(term_name, offset, col) {
+
+  $("#inner-nav-container-column-three").css("margin-top", (16 * (offset + 1)) + "px");
+  
+  var dot_loader = window.setInterval(function () {
+    $("#inner-nav-container-column-three").append(" . ");
+  }, 100);
+
+
+  $.ajax({
+    type: 'GET',
+    url: 'http://93.95.228.60/projects/ccap/wp-json/posts',
+    dataType: 'json',
+    data: {
+      filter: {
+        'kronologi': term_name
+      }
+    },
+    success: function (data) {
+
+      if ($.cookie('ccap_language') == "english") {
+        data.ccap_english = true;
+      } else if ($.cookie('ccap_language') == "swedish") {
+        data.ccap_swedish = true;
+      }
+
+      data.offset = offset;
+
+      window.clearInterval(dot_loader);
+
+      console.log(data);
+
+      $("#inner-nav-container-column-three").html(MyApp.templates.menulevelthree(data));
+
+    }
+  });
+}
+
 function getMenu() {
 
   // Start Loading animation
@@ -326,29 +396,24 @@ $(function () {
         filter: {
           'name': postSlug
         }
-      },
-      success: function (data) {
+      }
+    }).done(function (data) {
 
-        if ($.cookie('ccap_language') == "english") {
-          data[0].ccap_english = true;
-        } else if ($.cookie('ccap_language') == "swedish") {
-          data[0].ccap_swedish = true;
-        }
+      if ($.cookie('ccap_language') == "english") {
+        data[0].ccap_english = true;
+      } else if ($.cookie('ccap_language') == "swedish") {
+        data[0].ccap_swedish = true;
+      }
 
-        // State management
-        console.log(data[0]);
-        //  Render template
-        $("#inner-container-main-content-area").html(MyApp.templates.post(data[0]));
-        // Preload images for overlay viewer
-        var l = data[0].acf.bilder.length;
-        if (l !== 0) {
-          for (var i = 0; i < l; i++) {
-            $('<img/>')[0].src = data.acf.bilder[i].bild.sizes["pwr-large"];
-          }
+      //  Render template
+      $("#inner-container-main-content-area").html(MyApp.templates.post(data[0]));
+      // Preload images for overlay viewer
+      var l = data[0].acf.bilder.length;
+      if (l !== 0) {
+        for (var i = 0; i < l; i++) {
+          $('<img/>')[0].src = data.acf.bilder[i].bild.sizes["pwr-large"];
         }
       }
-    }).fail(function () {
-      window.clearInterval(dot_loader);
     });
 
   }
@@ -385,6 +450,11 @@ $(function () {
       clearThirdColumn();
       clearMainContentArea();
       getShop($(this).data("nav-offset"));
+    } else if ($(this).data("post-id") == 45) {
+      clearSecondColumn();
+      clearThirdColumn();
+      clearMainContentArea();
+      getArchive($(this).data("nav-offset"));
     } else if ($(this).hasClass("category")) {
       if ($(this).hasClass("level-two")) {
         clearThirdColumn();
@@ -394,6 +464,16 @@ $(function () {
         clearSecondColumn();
         clearMainContentArea();
         getCategoryContent($(this).data("category-name"), $(this).data("nav-offset"), 2);
+      }
+    } else if ($(this).hasClass("archive")) {
+      if ($(this).hasClass("level-two")) {
+        clearThirdColumn();
+        clearMainContentArea();
+        getArchiveList($(this).data("term-name"), $(this).data("nav-offset") + $(this).data("second-offset"));
+      } else {
+        clearSecondColumn();
+        clearMainContentArea();
+        getPost($(this).data("category-name"), $(this).data("nav-offset"), 2);
       }
 
     } else if ($(this).hasClass("children")) {
