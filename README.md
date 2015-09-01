@@ -1,18 +1,18 @@
 # CCAP, Manual
 
-Alla posttyper har inmatnignsfält för både engelska och svenska. Huvudtitel är den engelska, under denna finns ett fält för den svenska.
+Alla posttyper har inmatnignsfält för både engelska och svenska. Huvudtitel är den engelska, under denna finns ett fält för den svenska titeln.
 
 ## Lägg till innehåll
 
 - Gå till “Work” 
-- Välj “Add Work”
+- Välj “Add Work”
 - Välj rätt kategori i “Categories” till höger
 - Det finns även en inmatningsbox som heter "Kronologi": här väljer ni år. Om ni vill lägga till fler år tal kan ni gå till "Work" > "Kronologi"
 
 ## Lägg till nyheter
 
 - Gå till “News” 
-- Välj “Add new”
+- Välj “Add new”
 - Nyhetinläggen sorteras efter publiceringsdatum
 
 ## Lägg till kalenderinlägg
